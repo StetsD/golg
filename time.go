@@ -1,9 +1,31 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
+
+type Vertex struct {
+	X, Y float64
+}
+
+func (v *Vertex) Scale(f float64) {
+	v.X = v.X * f
+	v.Y = v.Y * f
+}
+
+func ScaleFunc(v *Vertex, f float64) {
+	v.X = v.X * f
+	v.Y = v.Y * f
+}
 
 func main() {
-	primes := [6]int{2, 3, 5, 7, 11, 13}
-	var s []int = primes[1:4]
-	fmt.Println(s)
+	v := Vertex{3, 4}
+	v.Scale(2)
+	ScaleFunc(&v, 10)
+
+	p := &Vertex{4, 3}
+	p.Scale(3)
+	ScaleFunc(p, 8)
+
+	fmt.Println(v, p)
 }
