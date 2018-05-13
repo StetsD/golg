@@ -1,26 +1,22 @@
 package main
 
-import (
-	"fmt"
-	"math"
-)
+import "fmt"
 
-type Vertex struct {
-	X, Y float64
+func sum(s []int, c chan int){
+	sum := 0
+	for _, v := range s {
+		sum += v
+	}
+	c <- sum
 }
 
-func (v *Vertex) Scale(f float64) {
-	v.X = v.X * f
-	v.Y = v.Y * f
-}
+func main(){
+	s := []int{7, 2, 8, -9, 4, 0}
 
-func (v *Vertex) Abs() float64 {
-	return math.Sqrt(v.X*v.X + v.Y*v.Y)
-}
+	c := make(chan int)
+	go sum(s[:len(s)/2], c)
+	go sum(s[len(s)/2:], c)
+	x, y := <-c, <-c
 
-func main() {
-	v := &Vertex{3, 4}
-	fmt.Printf("Before scaling: %+v, Abs: %v\n", v, v.Abs())
-	v.Scale(5)
-	fmt.Printf("After scaling: %+v, Abs: %v\n", v, v.Abs())
+	fmt.Println(x,y,x+y)
 }
